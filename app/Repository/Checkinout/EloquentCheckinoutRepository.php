@@ -16,7 +16,7 @@ class EloquentCheckinoutRepository implements CheckinoutRepository
         $checkinout->verifycode = $params['verifycode'];
         $checkinout->SN = $params['SN'];
         $checkinout->sensorid = $params['sensorid'];
-        $checkinout->Workcode = $params['Workcode'];
+        // $checkinout->Workcode = $params['Workcode'];
         $checkinout->Reserved = $params['Reserved'];
 
         $checkinout->save();

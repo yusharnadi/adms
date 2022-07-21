@@ -25,7 +25,7 @@ class CheckinoutController extends Controller
             'checktype' => 'required',
             'verifycode' => 'required',
             'sensorid' => 'required',
-            'Workcode' => 'required',
+            // 'Workcode' => 'required',
             'Reserved' => 'required',
         ]);
 
@@ -39,7 +39,7 @@ class CheckinoutController extends Controller
             'checktype' => $request->checktype,
             'verifycode' => $request->verifycode,
             'sensorid' => $request->sensorid,
-            'Workcode' => $request->Workcode,
+            // 'Workcode' => $request->Workcode,
             'Reserved' => $request->Reserved
         ];
 
