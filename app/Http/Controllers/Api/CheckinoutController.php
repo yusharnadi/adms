@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repository\Checkinout\EloquentCheckinoutRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CheckinoutController extends Controller
@@ -20,35 +21,34 @@ class CheckinoutController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'userid' => 'required|numeric',
+            'badge_number' => 'required',
             'SN' => 'required',
-            'checktype' => 'required',
-            'verifycode' => 'required',
-            'sensorid' => 'required',
-            // 'Workcode' => 'required',
-            'Reserved' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['status' => 'Error', 'error' => $validator->errors()], 422);
         }
 
-        $params = [
-            'userid' => $request->userid,
-            'SN' => $request->SN,
-            'checktype' => $request->checktype,
-            'verifycode' => $request->verifycode,
-            'sensorid' => $request->sensorid,
-            // 'Workcode' => $request->Workcode,
-            'Reserved' => $request->Reserved
-        ];
 
-        $store = $this->eloquentCheckinout->store($params);
+        try {
+            $userID = $this->eloquentCheckinout->getUserID($request->badge_number);
 
-        if (!empty($store)) {
-            return response()->json(['status' => 'success', 'data' => $store], 201);
+            $params = [
+                'userid' => $userID->userid,
+                'SN' => $request->SN,
+                'checktype' => 0,
+                'verifycode' => 9,
+            ];
+
+            $store = $this->eloquentCheckinout->store($params);
+
+            if (!empty($store)) {
+                return response()->json(['status' => 'success', 'data' => $store], 201);
+            }
+
+            return response()->json(['status' => 'error', 'error' => 'Cannot store data, internal server error'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'Error', 'error' => $e->getMessage()], 500);
         }
-
-        return response()->json(['status' => 'error', 'error' => 'Cannot store data, internal server error'], 500);
     }
 }

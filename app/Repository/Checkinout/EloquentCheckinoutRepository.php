@@ -3,6 +3,7 @@
 namespace App\Repository\Checkinout;
 
 use App\Models\Checkinout;
+use App\Models\Userinfo;
 
 class EloquentCheckinoutRepository implements CheckinoutRepository
 {
@@ -15,12 +16,14 @@ class EloquentCheckinoutRepository implements CheckinoutRepository
         $checkinout->checktype = $params['checktype'];
         $checkinout->verifycode = $params['verifycode'];
         $checkinout->SN = $params['SN'];
-        $checkinout->sensorid = $params['sensorid'];
-        // $checkinout->Workcode = $params['Workcode'];
-        $checkinout->Reserved = $params['Reserved'];
 
         $checkinout->save();
 
         return $checkinout;
+    }
+
+    public function getUserID($badge_number)
+    {
+        return Userinfo::findOrFail($badge_number);
     }
 }
