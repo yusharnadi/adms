@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/checkinout', [CheckinoutController::class, 'store']);
+Route::get('/checkinout/getbydate', [CheckinoutController::class, 'getByDate']);
+Route::get('/checkinout/getbymonth', [CheckinoutController::class, 'getByMonth']);
